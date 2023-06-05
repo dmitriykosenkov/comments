@@ -72,12 +72,16 @@ body {
          font-size: 16px;
          padding: 0 5px 2px;
          border-radius: 3px;
+         margin-left: 8px;
       }
    }
    &__period {
       display: flex;
       align-items: center;
       color: hsl(211, 10%, 45%);
+      @media (max-width: 630px) {
+         justify-self: end;
+      }
    }
    &__body {
       grid-column: span 3;
@@ -160,7 +164,7 @@ body {
       }
    }
    &__aside {
-      grid-row: span 2;
+      // grid-row: span auto;
       position: relative;
       &::after {
          content: "";
@@ -177,7 +181,10 @@ body {
          }
       }
    }
-   &__item {
+   &__items {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
    }
 }
 

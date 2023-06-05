@@ -19,7 +19,64 @@
         },
         "username": "amyrobson"
       },
-      "replies": []
+      "replies": [
+        {
+          "id": "8b4920c9-8656-4b2d-8fec-9ebc138e7878",
+          "content": "www",
+          "createdAt": "just now",
+          "score": 0,
+          "replyingTo": "amyrobson",
+          "user": {
+            "image": {
+              "png": "/images/avatars/image-juliusomo.png",
+              "webp": "/images/avatars/image-juliusomo.webp"
+            },
+            "username": "juliusomo"
+          }
+        },
+        {
+          "id": "dc0cbdc2-bb58-47b4-9c98-6784cb4dca3b",
+          "content": "eeee",
+          "createdAt": "just now",
+          "score": 0,
+          "replyingTo": "amyrobson",
+          "user": {
+            "image": {
+              "png": "/images/avatars/image-juliusomo.png",
+              "webp": "/images/avatars/image-juliusomo.webp"
+            },
+            "username": "juliusomo"
+          }
+        },
+        {
+          "id": "da8ebdb8-e7a3-47e0-a812-3b8d82e7104d",
+          "content": "qqqq",
+          "createdAt": "just now",
+          "score": 0,
+          "replyingTo": "amyrobson",
+          "user": {
+            "image": {
+              "png": "/images/avatars/image-juliusomo.png",
+              "webp": "/images/avatars/image-juliusomo.webp"
+            },
+            "username": "juliusomo"
+          }
+        },
+        {
+          "id": "386db3e7-91e7-4830-a9b3-9fafc2c61fda",
+          "content": "ffff",
+          "createdAt": "just now",
+          "score": 0,
+          "replyingTo": "amyrobson",
+          "user": {
+            "image": {
+              "png": "/images/avatars/image-juliusomo.png",
+              "webp": "/images/avatars/image-juliusomo.webp"
+            },
+            "username": "juliusomo"
+          }
+        }
+      ]
     },
     {
       "id": 2,
@@ -54,6 +111,20 @@
           "createdAt": "2 days ago",
           "score": 2,
           "replyingTo": "ramsesmiron",
+          "user": {
+            "image": {
+              "png": "/images/avatars/image-juliusomo.png",
+              "webp": "/images/avatars/image-juliusomo.webp"
+            },
+            "username": "juliusomo"
+          }
+        },
+        {
+          "id": "93b81546-b5f1-42a3-b180-23b035550aa1",
+          "content": "rrrrr",
+          "createdAt": "just now",
+          "score": 0,
+          "replyingTo": "maxblagun",
           "user": {
             "image": {
               "png": "/images/avatars/image-juliusomo.png",

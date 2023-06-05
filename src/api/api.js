@@ -16,3 +16,11 @@ export const getAddedComment = async (newComment) => {
    const response = await instanceAxios.post(`comments`, newComment)
    return response.data
 }
+export const getDeleteComment = async (id) => {
+   const response = await instanceAxios.delete(`comments/${id}`)
+   console.log(response.data);
+}
+export const getReplyMessage = async (comment) => {
+   const response = await instanceAxios.put(`comments/${comment.id}`, comment)
+   return response.data
+}

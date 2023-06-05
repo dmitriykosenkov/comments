@@ -1,8 +1,12 @@
 import React, { useState } from "react";
 import Form from "../Form/Form";
 import RepliesList from "../RepliesList/RepliesList";
+import { getDeleteComment } from "../../api/api";
+import { v4 as uuidv4 } from 'uuid';
+import ViewComment from "./ViewComment";
 
-const CommentItem = ({ comment, auth, addNewComment }) => {
+
+const CommentItem = ({ comment, auth, addOrDeleteReplyMessage }) => {
    const [showReplies, setShowReplies] = useState(false);
    const [replyMode, setReplyMode] = useState(false)
    const openReplies = () => {
@@ -12,53 +16,39 @@ const CommentItem = ({ comment, auth, addNewComment }) => {
       setReplyMode((prev) => !prev);
    };
    
-
+   const addReply = (replyText) => {
+      const replyMessage = {
+         id: uuidv4(),
+         content: replyText,
+         createdAt: "just now",
+         score: 0,
+         replyingTo: comment.user.username,
+         user: {
+            image: {
+               png: "/images/avatars/image-juliusomo.png",
+               webp: "/images/avatars/image-juliusomo.webp",
+            },
+            username: "juliusomo",
+         },
+      }
+      const commentWithReply = {
+         ...comment, replies: [...comment.replies, replyMessage]
+      }
+      addOrDeleteReplyMessage(commentWithReply)
+   }
+   const deleteReply = (id) => {
+      addOrDeleteReplyMessage({...comment, replies: comment.replies.filter(item => item.id !== id)})
+   }
    return (
       <div className="comments__item comment">
-         <div className="comment__inner">
-            <div className="comment__author">
-               <img
-                  src={process.env.PUBLIC_URL + comment.user.image.webp}
-                  alt=""
-               />
-               <div className="comment__author-name">
-                  {comment.user.username}
-                  {auth.username === comment.user.username ? (
-                     <span>you</span>
-                  ) : null}
-               </div>
-            </div>
-            <div className="comment__period">{comment.createdAt}</div>
-            {auth.username !== comment.user.username ? (
-               <div className="comment__actions">
-                  <div
-                     className="comment__reply _icon-reply"
-                     onClick={openReplies}
-                  >
-                     Reply
-                  </div>
-               </div>
-            ) : (
-               <div className="comment__actions">
-                  <div class="comment__delete _icon-delete">Delete</div>
-                  <div class="comment__reply _icon-edit">Edit</div>
-               </div>
-            )}
-            <div className="comment__counter counter">
-               <div className="counter__inner">
-                  <div className="counter__sign _icon-plus"></div>
-                  <div className="counter__digit">{comment.score}</div>
-                  <div className="counter__sign _icon-minus"></div>
-               </div>
-            </div>
-            <div className="comment__body">{comment.content}</div>
-         </div>
+         <ViewComment comment={comment} auth={auth} openReplies={openReplies} deleteItem={getDeleteComment} />
          {showReplies ? (
-            <RepliesList auth={auth} replies={comment.replies} />
+            <RepliesList auth={auth} replies={comment.replies} deleteReply={deleteReply} />
          ) : null}
-         {replyMode ? <Form addNewComment={addNewComment} /> : null}
+         {replyMode ? <Form placeholder={`@${comment.user.username}`} addNewComment={addReply} buttonText="Reply" /> : null}
       </div>
    );
 };
+
 
 export default CommentItem;

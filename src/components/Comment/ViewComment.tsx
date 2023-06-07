@@ -27,8 +27,8 @@ const ViewComment: FC<PropsType> = ({
                   <span>you</span>
                ) : null}
             </div>
+            <div className="comment__period">{comment.createdAt}</div>
          </div>
-         <div className="comment__period">{comment.createdAt}</div>
          {auth.username !== comment.user.username ? (
             <div className="comment__actions">
                <div
@@ -40,6 +40,12 @@ const ViewComment: FC<PropsType> = ({
             </div>
          ) : (
             <div className="comment__actions">
+               {/* <div
+                  className="comment__reply _icon-reply"
+                  onClick={openReplies}
+               >
+                  Reply
+               </div> */}
                <div
                   className="comment__delete _icon-delete"
                   onClick={() => deleteItem(comment.id)}

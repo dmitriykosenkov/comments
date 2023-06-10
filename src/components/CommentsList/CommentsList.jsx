@@ -1,6 +1,8 @@
+import { useEffect } from "react";
 import CommentItem from "../Comment/CommentItem";
 
-const CommentsList = ({ comments = [], auth, addOrDeleteReplyMessage }) => {
+const CommentsList = ({ comments = [], auth, addOrDeleteReplyMessage, setIsOpen}) => {
+   
    return (
       <div className="comments__items ">
          {comments.map((comment) => (
@@ -9,6 +11,7 @@ const CommentsList = ({ comments = [], auth, addOrDeleteReplyMessage }) => {
                   addOrDeleteReplyMessage={addOrDeleteReplyMessage}
                   comment={comment}
                   auth={auth}
+                  setIsOpen={setIsOpen}
                />
             </div>
          ))}

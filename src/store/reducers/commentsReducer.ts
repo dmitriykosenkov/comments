@@ -1,8 +1,9 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { PayloadAction, createSlice } from "@reduxjs/toolkit";
+import { log } from "console";
 
 
 export interface ReplyType {
-   id: number
+   id: string
    content: string
    createdAt: string
    score: number
@@ -16,7 +17,7 @@ export interface ReplyType {
    }
 }
 export interface CommentType {
-   id: number,
+   id: string,
    content: string
    createdAt: string
    score: number
@@ -33,9 +34,19 @@ export interface AuthUserType {
    image: {
       png: string
       webp: string
-    },
-    username: string
+   },
+   username: string
 }
+export interface CommentActionType {
+   id: string
+   mathOperation: string
+}
+export interface ReplyActionType {
+   commentId: string
+   replyId: string
+   mathOperation?: string
+}
+
 
 export interface InitialStateType {
    authUser: AuthUserType
@@ -48,12 +59,12 @@ const initialState: InitialStateType = {
       username: "juliusomo",
       image: {
          png: "/images/avatars/image-juliusomo.png",
-         webp:"/images/avatars/image-juliusomo.webp"
+         webp: "/images/avatars/image-juliusomo.webp"
       }
    },
    commentsList: [
       {
-         id: 1,
+         id: "1",
          content: "Impressive! Though it seems the drag feature could be improved. But overall it looks incredible. You've nailed the design and the responsiveness at various breakpoints works really well.",
          createdAt: "1 month ago",
          score: 12,
@@ -67,7 +78,7 @@ const initialState: InitialStateType = {
          replies: []
       },
       {
-         id: 2,
+         id: "2",
          content: "Woah, your project looks awesome! How long have you been coding for? I'm still new, but think I want to dive into React as well soon. Perhaps you can give me an insight on where I can learn React? Thanks!",
          createdAt: "2 weeks ago",
          score: 5,
@@ -80,7 +91,21 @@ const initialState: InitialStateType = {
          },
          replies: [
             {
-               id: 3,
+               id: "6",
+               content: "I couldn't agree more with this. Everything moves so fast and it always seems like everyone knows the newest library/framework. But the fundamentals are what stay constant.",
+               createdAt: "2 days ago",
+               score: 2,
+               replyingTo: "ramsesmiron",
+               user: {
+                  image: {
+                     png: "/images/avatars/image-juliusomo.png",
+                     webp: "/images/avatars/image-juliusomo.webp"
+                  },
+                  username: "juliusomo"
+               }
+            },
+            {
+               id: "3",
                content: "If you're still new, I'd recommend focusing on the fundamentals of HTML, CSS, and JS before considering React. It's very tempting to jump ahead but lay a solid foundation first.",
                createdAt: "1 week ago",
                score: 4,
@@ -94,7 +119,7 @@ const initialState: InitialStateType = {
                }
             },
             {
-               id: 4,
+               id: "4",
                content: "I couldn't agree more with this. Everything moves so fast and it always seems like everyone knows the newest library/framework. But the fundamentals are what stay constant.",
                createdAt: "2 days ago",
                score: 2,
@@ -108,14 +133,73 @@ const initialState: InitialStateType = {
                }
             }
          ]
-      }
+      },
+      {
+         id: "5",
+         content: "Impressive! ",
+         createdAt: "1 month ago",
+         score: 12,
+         user: {
+            image: {
+               png: "/images/avatars/image-juliusomo.png",
+               webp: "/images/avatars/image-juliusomo.webp"
+            },
+            username: "juliusomo"
+         },
+         replies: []
+      },
    ]
 }
 
 const commentsSlice = createSlice({
    initialState,
    name: 'comments',
-   reducers: {},
+   reducers: {
+      addNewComment: (state, action: PayloadAction<CommentType>) => {
+         state.commentsList.push(action.payload)
+      },
+      deleteItem: (state, action: PayloadAction<string>) => {
+         state.commentsList = state.commentsList.filter(item => item.id !== action.payload)
+      },
+
+      addReply: (state, action: PayloadAction<{commentId: string, data:ReplyType}>) => {
+         state.commentsList.map(comment => comment.id === action.payload.commentId ? comment.replies.push(action.payload.data) : comment)
+      },
+      deleteReplyItem: (state, action: PayloadAction<ReplyActionType>) => {
+         state.commentsList.map(comment => {
+            if (comment.id === action.payload.commentId) {
+               comment.replies = comment.replies.filter(reply => action.payload.replyId !== reply.id)
+            } 
+         })
+      },
+
+
+      counterCommentsLikes: (state, action: PayloadAction<CommentActionType>) => {
+         state.commentsList.map(item => {
+            if (action.payload.id === item.id ) {
+               return { ...item, score: action.payload.mathOperation === 'increment' ? item.score++ : item.score-- }
+            } else {
+               return item
+            }
+         })
+      },
+      counterRepliesLikes: (state, action: PayloadAction<ReplyActionType>) => {
+         state.commentsList.map(comment => {
+            if (action.payload.commentId === comment.id) {
+               comment.replies.map(reply => {
+                  if (reply.id === action.payload.replyId) {
+                     const operation = action.payload.mathOperation === 'increment' ? reply.score++ : reply.score--
+                     return { ...reply, reply: operation }
+                  } else {
+                     return reply
+                  }
+               })
+            }
+         })
+      }
+   },
 })
 
+
+export const { addNewComment, addReply, deleteItem, deleteReplyItem, counterCommentsLikes, counterRepliesLikes } = commentsSlice.actions
 export default commentsSlice.reducer

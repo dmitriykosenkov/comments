@@ -11,7 +11,7 @@
 }
 
 $baseFont: "Rubik", sans-serif;
-$hoverColor: #C5C6EF;
+$hoverColor: #c5c6ef;
 html,
 body {
    height: 100%;
@@ -117,9 +117,11 @@ body {
       cursor: pointer;
       color: hsl(358, 79%, 66%);
       transition: color ease 0.3s;
-      
-      &:hover {
-         color: #FFB8BB;
+
+      @media (hover: hover) and (pointer: fine) {
+         &:hover {
+            color: #ffb8bb;
+         }
       }
       &::before {
          margin-right: 10px;
@@ -129,8 +131,10 @@ body {
       cursor: pointer;
       color: hsl(238, 40%, 52%);
       transition: color ease 0.3s;
-      &:hover {
-         color: $hoverColor;
+      @media (hover: hover) and (pointer: fine) {
+         &:hover {
+            color: $hoverColor;
+         }
       }
       &::before {
          margin-right: 10px;
@@ -156,8 +160,10 @@ body {
    &__sign {
       cursor: pointer;
       transition: color ease 0.3s;
-      &:hover {
-         color: hsl(238, 40%, 52%);
+      @media (hover: hover) and (pointer: fine) {
+         &:hover {
+            color: hsl(238, 40%, 52%);
+         }
       }
    }
    &__digit {
@@ -230,7 +236,7 @@ body {
 
          &:focus {
             transition: outline 0.3s ease;
-            outline: 1px solid #5357B6;
+            outline: 1px solid #5357b6;
          }
       }
       @media (max-width: 630px) {
@@ -253,8 +259,10 @@ body {
          font-weight: 700;
          font-size: 17px;
          transition: background-color ease 0.3s;
-         &:hover {
-            background-color: $hoverColor;
+         @media (hover: hover) and (pointer: fine) {
+            &:hover {
+               background-color: $hoverColor;
+            }
          }
       }
       @media (max-width: 630px) {

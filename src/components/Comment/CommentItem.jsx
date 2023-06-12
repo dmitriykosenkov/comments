@@ -15,9 +15,7 @@ const CommentItem = ({ comment, auth, setIsOpen}) => {
    const [showReplies, setShowReplies] = useState(false);
    const [replyMode, setReplyMode] = useState(false);
    const [commentEditMode, setCommentEditMode] = useState(false);
-   useEffect(() => {
-      console.log("render");
-   }, []);
+   
    const openReplies = () => {
       if (comment.replies.length !== 0) {
          setShowReplies((prev) => !prev);

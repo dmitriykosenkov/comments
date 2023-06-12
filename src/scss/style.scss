@@ -19,11 +19,18 @@ body {
    color: hsl(211, 10%, 45%);
    background-color: hsl(228, 33%, 97%);
 }
+button {
+   font-family: $baseFont;
+   font-size: 16px;
+}
 .wrapper {
    max-width: 840px;
    margin: 0 auto;
    min-height: 100vh;
    padding: 50px 20px;
+   @media (max-width:440px){
+        padding: 50px 16px;
+   }
 }
 .comments {
    margin-bottom: 20px;

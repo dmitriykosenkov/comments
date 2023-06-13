@@ -87,7 +87,7 @@ const ViewComment: FC<PropsType> = ({
                <div className="counter__sign _icon-minus" data-="decrement" onClick={onCounter}></div>
             </div>
          </div>
-         <div className="comment__body"><span>@{comment.replyingTo}</span> {comment.content}</div>
+         <div className="comment__body">{comment.replyingTo && <span>@{comment.replyingTo}</span>} {comment.content}</div>
       </div>
    );
 };

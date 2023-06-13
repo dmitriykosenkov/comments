@@ -1,13 +1,10 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { log } from "console";
 
-
-export interface ReplyType {
+export interface CommentType {
    id: string
    content: string
    createdAt: string
    score: number
-   replyingTo: string
    user: {
       image: {
          png: string
@@ -15,20 +12,8 @@ export interface ReplyType {
       },
       username: string
    }
-}
-export interface CommentType {
-   id: string,
-   content: string
-   createdAt: string
-   score: number
-   user: {
-      image: {
-         png: string
-         webp: string
-      },
-      username: string
-   },
-   replies: Array<ReplyType>
+   replyingTo?: string
+   replies?: Array<CommentType>
 }
 export interface AuthUserType {
    image: {
@@ -158,11 +143,13 @@ const commentsSlice = createSlice({
       addNewComment: (state, action: PayloadAction<CommentType>) => {
          state.commentsList.push(action.payload)
       },
-      deleteItem: (state, action: PayloadAction<string>) => {
+      deleteComment: (state, action: PayloadAction<string>) => {
          state.commentsList = state.commentsList.filter(item => item.id !== action.payload)
       },
 
-      addReply: (state, action: PayloadAction<{commentId: string, data:ReplyType}>) => {
+      addReply: (state, action: PayloadAction<{commentId: string, data:CommentType}>) => {
+         console.log(action.payload);
+         
          state.commentsList.map(comment => comment.id === action.payload.commentId ? comment.replies.push(action.payload.data) : comment)
       },
       deleteReplyItem: (state, action: PayloadAction<ReplyActionType>) => {
@@ -201,5 +188,5 @@ const commentsSlice = createSlice({
 })
 
 
-export const { addNewComment, addReply, deleteItem, deleteReplyItem, counterCommentsLikes, counterRepliesLikes } = commentsSlice.actions
+export const { addNewComment, addReply, deleteComment, deleteReplyItem, counterCommentsLikes, counterRepliesLikes } = commentsSlice.actions
 export default commentsSlice.reducer

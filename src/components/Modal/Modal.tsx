@@ -1,13 +1,18 @@
 import { useEffect } from "react";
 import styles from "./Modal.module.scss";
 
-const Modal = ({ setIsOpen }) => {
+const Modal = ({ setIsOpen, deleteItem }) => {
    useEffect(() => {
       document.body.style.overflow = "hidden";
       return () => {
          document.body.style.overflow = "";
       };
    }, []);
+   const onDelete = () => {
+      deleteItem()
+      setIsOpen(false)
+   }
+
    return (
       <>
          <div className={styles.darkBG} onClick={() => setIsOpen(false)} />
@@ -27,7 +32,7 @@ const Modal = ({ setIsOpen }) => {
                   </button>
                   <button
                      className={`${styles.actionBtn} ${styles.deleteBtn}`}
-                     onClick={() => setIsOpen(false)}
+                     onClick={onDelete}
                   >
                      YES, DELETE
                   </button>

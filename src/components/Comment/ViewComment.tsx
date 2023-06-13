@@ -1,27 +1,26 @@
-import { FC, useState } from "react";
-import { AuthUserType, ReplyType } from "../../store/reducers/commentsReducer";
+import { FC } from "react";
+import { CommentType } from "../../store/reducers/commentsReducer";
+import { useAppSelector } from "../../store/hooks";
 
 interface PropsType {
-   comment: ReplyType;
-   auth: AuthUserType;
+   comment: CommentType;
    setIsOpen: (data: boolean) => void
    setEditMode: (data: boolean) => void;
-   openReplies: () => void;
    deleteItem: (id: string) => void;
+   openReplies?: () => void;
    setEditID?: (id: string) => void;
    counter?: (id: string, mathOperation: string) => void;
-   // incrementReplyCounter?: (id: string) => void;
 }
 
 const ViewComment: FC<PropsType> = ({
    setIsOpen,
    comment,
-   auth,
    openReplies,
    deleteItem,
    setEditMode,
    ...props
 }) => {
+   const {authUser: auth} = useAppSelector(state => state.comments)
    const updateReply = () => {
       if (props.setEditID) {
          setEditMode(true);
@@ -41,11 +40,8 @@ const ViewComment: FC<PropsType> = ({
    }
 
    const onDelete = () => {
-      if (props.setEditID) {
-         deleteItem(comment.id)
-      } else {
-         deleteItem(comment.id)
-      }
+      deleteItem(comment.id)
+      setIsOpen(true)
    }
    return (
       <div className="comment__inner">
@@ -75,8 +71,7 @@ const ViewComment: FC<PropsType> = ({
             <div className="comment__actions">
                <div
                   className="comment__delete _icon-delete"
-                  // onClick={() => deleteItem(comment.id)}
-                  onClick={() => setIsOpen(true)}
+                  onClick={onDelete}
                >
                   Delete
                </div>
@@ -92,7 +87,7 @@ const ViewComment: FC<PropsType> = ({
                <div className="counter__sign _icon-minus" data-="decrement" onClick={onCounter}></div>
             </div>
          </div>
-         <div className="comment__body">{comment.content}</div>
+         <div className="comment__body"><span>@{comment.replyingTo}</span> {comment.content}</div>
       </div>
    );
 };

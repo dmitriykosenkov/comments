@@ -23,6 +23,10 @@ button {
    font-family: $baseFont;
    font-size: 16px;
 }
+input,
+textarea {
+   font-family: inherit;
+}
 .wrapper {
    max-width: 840px;
    margin: 0 auto;
@@ -98,6 +102,10 @@ button {
    &__body {
       grid-column: span 2;
       line-height: 1.5rem;
+      span {
+         color: #5357B6;
+         font-weight: 500;
+      }
    }
 
    &__counter {
@@ -231,6 +239,8 @@ button {
       }
    }
    &__text {
+      position: relative;
+      color: #334253;
       textarea {
          display: block;
          width: 100%;
@@ -240,11 +250,18 @@ button {
          padding: 10px 20px;
          font-size: 16px;
          border: 1px solid hsl(223, 19%, 93%);
-
+         color: #334253;
          &:focus {
             transition: outline 0.3s ease;
             outline: 1px solid #5357b6;
          }
+      }
+      span{
+         color: #334253;
+
+         position: absolute;
+         top: 11px;
+         left: 21px;
       }
       @media (max-width: 630px) {
          grid-column: 1 / 3;

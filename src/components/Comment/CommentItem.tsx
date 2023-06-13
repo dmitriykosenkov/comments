@@ -1,29 +1,48 @@
-import React, { useEffect, useState } from "react";
+import { FC, useState } from "react";
 import Form from "../Form/Form";
 import RepliesList from "../RepliesList/RepliesList";
-import { getDeleteComment } from "../../api/api";
 import { v4 as uuidv4 } from "uuid";
 import ViewComment from "./ViewComment";
-import { useAppDispatch, useAppSelector } from "../../store/hooks";
+import { useAppDispatch } from "../../store/hooks";
 import {
+   CommentType,
    addReply,
    counterCommentsLikes,
-   deleteItem,
 } from "../../store/reducers/commentsReducer";
 
-const CommentItem = ({ comment, auth, setIsOpen}) => {
+interface PropsType {
+   comment: CommentType;
+   setIsOpen: (value: boolean) => void;
+   setDeletedComment: (value: string) => void;
+   setDeletedReply: (value: string) => void;
+}
+
+const CommentItem: FC<PropsType> = ({
+   comment,
+   setIsOpen,
+
+   setDeletedComment,
+   setDeletedReply,
+}) => {
    const [showReplies, setShowReplies] = useState(false);
    const [replyMode, setReplyMode] = useState(false);
    const [commentEditMode, setCommentEditMode] = useState(false);
-   
+
    const openReplies = () => {
-      if (comment.replies.length !== 0) {
-         setShowReplies((prev) => !prev);
+      setShowReplies((prev) => !prev);
+      // ! слідкуємо за тим, з реплаєм якого саме коментаря відбуваться зміни
+      if (showReplies) {
+         setDeletedComment("");
+      } else {
+         setDeletedComment("");
+         setDeletedComment(comment.id);
       }
+      // !======================
       setReplyMode((prev) => !prev);
    };
-
    const onAddReply = (replyText) => {
+      setDeletedComment(comment.id); // слідкує за коментарем з відкритими реплаями
+
       const replyMessage = {
          id: uuidv4(),
          content: replyText,
@@ -38,20 +57,14 @@ const CommentItem = ({ comment, auth, setIsOpen}) => {
             username: "juliusomo",
          },
       };
-      const payload = {commentId: comment.id, data: replyMessage}
+      const payload = { commentId: comment.id, data: replyMessage };
       dispatch(addReply(payload));
    };
-  
-   
-
    const commentsCounter = (id, mathOperation) => {
       const payload = { mathOperation, id };
       dispatch(counterCommentsLikes(payload));
    };
 
-   const deleteComment = (id) => {
-      dispatch(deleteItem(id));
-   };
    const editComment = (data) => {
       console.log(data);
    };
@@ -62,12 +75,11 @@ const CommentItem = ({ comment, auth, setIsOpen}) => {
          {!commentEditMode ? (
             <ViewComment
                comment={comment}
-               auth={auth}
                openReplies={openReplies}
                setEditMode={setCommentEditMode}
-               deleteItem={deleteComment}
+               deleteItem={setDeletedComment}
                counter={commentsCounter}
-               editComment={editComment}
+               // editComment={editComment}
                setIsOpen={setIsOpen}
             />
          ) : (
@@ -76,14 +88,15 @@ const CommentItem = ({ comment, auth, setIsOpen}) => {
          {showReplies ? (
             <RepliesList
                commentId={comment.id}
-               auth={auth}
                replies={comment.replies}
-               // deleteReply={deleteReply}
+               setIsOpen={setIsOpen}
+               setDeletedReply={setDeletedReply}
             />
          ) : null}
          {replyMode ? (
             <Form
-               placeholder={`@${comment.user.username}`}
+               replyTo={comment.user.username}
+               // placeholder={`@${comment.user.username}`}
                addNewComment={onAddReply}
                buttonText="Reply"
             />

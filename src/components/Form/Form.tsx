@@ -1,13 +1,23 @@
-import { FC, useState } from "react";
+import { FC, useEffect, useRef, useState } from "react";
 
 interface PropsType {
-   addNewComment: (comment: string) => void;
    buttonText: string;
-   placeholder: string;
+   replyTo?: string
+   placeholder?: string;
+   addNewComment: (comment: string) => void;
 }
 
-const Form: FC<PropsType> = ({ addNewComment, buttonText, placeholder }) => {
+const Form: FC<PropsType> = ({ addNewComment, buttonText, placeholder, replyTo }) => {
    const [newComment, setNewComment] = useState("");
+   const textAreaRef = useRef(null);
+   const spanRef = useRef(null);
+
+   useEffect(() => {
+      if (placeholder !== "") {
+         const offset = Number(spanRef.current.offsetWidth) + 4
+         textAreaRef.current.style.textIndent =  (offset + "px")
+      }
+   }, []);
 
    const onSubmit = (e) => {
       e.preventDefault();
@@ -29,10 +39,14 @@ const Form: FC<PropsType> = ({ addNewComment, buttonText, placeholder }) => {
             </div>
             <div className="form__text">
                <textarea
-                  value={newComment}
+               placeholder={placeholder ? placeholder : ""}
+                  ref={textAreaRef}
                   onChange={(e) => setNewComment(e.target.value)}
-                  placeholder={placeholder}
-               ></textarea>
+                  value={newComment}
+               >
+                  {newComment}
+               </textarea>
+               {replyTo !== "" && <span ref={spanRef}>{replyTo}</span>}
             </div>
             <div className="form__btn">
                <button onClick={onSubmit}>{buttonText}</button>

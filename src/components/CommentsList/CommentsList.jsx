@@ -4,8 +4,6 @@ const CommentsList = ({
    comments = [],
    addOrDeleteReplyMessage,
    setIsOpen,
-
-
    setDeletedComment,
    setDeletedReply
 }) => {
@@ -16,8 +14,6 @@ const CommentsList = ({
                <CommentItem
                   comment={comment}
                   setIsOpen={setIsOpen}
-
-
                   setDeletedComment={setDeletedComment}
                   setDeletedReply={setDeletedReply}
                />

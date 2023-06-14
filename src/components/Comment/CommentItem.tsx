@@ -20,13 +20,13 @@ interface PropsType {
 const CommentItem: FC<PropsType> = ({
    comment,
    setIsOpen,
-
    setDeletedComment,
    setDeletedReply,
 }) => {
    const [showReplies, setShowReplies] = useState(false);
    const [replyMode, setReplyMode] = useState(false);
    const [commentEditMode, setCommentEditMode] = useState(false);
+   const [editedCommentID, setEditedCommentID] = useState("");
 
    const openReplies = () => {
       setShowReplies((prev) => !prev);
@@ -40,6 +40,7 @@ const CommentItem: FC<PropsType> = ({
       // !======================
       setReplyMode((prev) => !prev);
    };
+
    const onAddReply = (replyText) => {
       setDeletedComment(comment.id); // слідкує за коментарем з відкритими реплаями
 
@@ -60,31 +61,32 @@ const CommentItem: FC<PropsType> = ({
       const payload = { commentId: comment.id, data: replyMessage };
       dispatch(addReply(payload));
    };
+
    const commentsCounter = (id, mathOperation) => {
       const payload = { mathOperation, id };
       dispatch(counterCommentsLikes(payload));
    };
 
-   const editComment = (data) => {
+   const onEditComment = (data) => {
       console.log(data);
+      setCommentEditMode(false);
    };
 
    const dispatch = useAppDispatch();
    return (
       <div className="comments__item comment">
-         {!commentEditMode ? (
-            <ViewComment
-               comment={comment}
-               openReplies={openReplies}
-               setEditMode={setCommentEditMode}
-               deleteItem={setDeletedComment}
-               counter={commentsCounter}
-               // editComment={editComment}
-               setIsOpen={setIsOpen}
-            />
-         ) : (
-            <div>EDIT MODE</div>
-         )}
+         <ViewComment
+            comment={comment}
+            openReplies={openReplies}
+            editMode={commentEditMode}
+            setEditMode={setCommentEditMode}
+            deleteItem={setDeletedComment}
+            counter={commentsCounter}
+            setIsOpen={setIsOpen}
+            updateItem={onEditComment}
+            editID={editedCommentID}
+            setEditID={setEditedCommentID}
+         />
          {showReplies ? (
             <RepliesList
                commentId={comment.id}
@@ -96,7 +98,6 @@ const CommentItem: FC<PropsType> = ({
          {replyMode ? (
             <Form
                replyTo={comment.user.username}
-               // placeholder={`@${comment.user.username}`}
                addNewComment={onAddReply}
                buttonText="Reply"
             />

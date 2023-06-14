@@ -107,6 +107,10 @@ textarea {
          font-weight: 500;
       }
    }
+   &__body-edit {
+      
+
+   }
 
    &__counter {
       grid-row: 1 / span 2;
@@ -258,7 +262,6 @@ textarea {
       }
       span{
          color: #334253;
-
          position: absolute;
          top: 11px;
          left: 21px;
@@ -272,6 +275,7 @@ textarea {
       display: flex;
       flex-direction: column;
       button {
+         align-self: flex-end;
          cursor: pointer;
          width: 100px;
          background-color: hsl(238, 40%, 52%);
@@ -292,5 +296,8 @@ textarea {
       @media (max-width: 630px) {
          flex-direction: row-reverse;
       }
+   }
+   &__btn-edit {
+      padding-top: 16px;
    }
 }

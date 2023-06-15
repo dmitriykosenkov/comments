@@ -12,7 +12,6 @@ const Form: FC<PropsType> = ({
    addNewComment,
    buttonText,
    placeholder,
-   replyTo,
    ...props
 }) => {
    const [newComment, setNewComment] = useState("");
@@ -53,7 +52,7 @@ const Form: FC<PropsType> = ({
                >
                   {newComment}
                </textarea>
-               {replyTo !== "" && <span ref={spanRef}>@{replyTo}</span>}
+               {props.replyTo !== "" && <span ref={spanRef}>@{props.replyTo}</span>}
             </div>
             <div className="form__btn">
                <button onClick={onSubmit}>{buttonText}</button>

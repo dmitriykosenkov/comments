@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC, useRef, useState, useEffect } from "react";
 import { CommentType } from "../../store/reducers/commentsReducer";
 import { useAppSelector } from "../../store/hooks";
 import Button from "../Button/Button";
@@ -12,7 +12,7 @@ interface PropsType {
    openReplies?: () => void;
    editID?: string;
    setEditID?: (id: string) => void;
-   updateItem?: (value: string) => void;
+   updateItem?: (value: string, ...args) => void;
    counter?: (id: string, mathOperation: string) => void;
 }
 
@@ -30,13 +30,25 @@ const ViewComment: FC<PropsType> = ({
       comment.content
    );
    const onSubmitChangedMessage = () => {
-      props.updateItem(localEditedComment);
-      setEditMode(false);
+      if (comment.replyingTo) {
+         props.updateItem(comment.id, localEditedComment);
+         setEditMode(false);
+      } else {
+         props.updateItem(localEditedComment);
+         setEditMode(false);
+      }
    };
+
+   
    const openEditMode = () => {
       setEditMode((prev) => !prev);
       props.setEditID(comment.id);
    };
+   const moveCaretAtEnd = (e) => {
+      const temp_value = e.target.value
+      e.target.value = ''
+      e.target.value = temp_value
+    }
 
    const onCounter = (e) => {
       const mathOperation = e.target.getAttribute("data-");
@@ -107,6 +119,8 @@ const ViewComment: FC<PropsType> = ({
             <div className="comment__body comment__body-edit">
                <div className="form__text">
                   <textarea
+                     autoFocus
+                     onFocus={moveCaretAtEnd}
                      onChange={(event) =>
                         setlocalEditedComment(event.target.value)
                      }

@@ -1,6 +1,6 @@
 import "./scss/style.scss";
 import "./iconfont.css";
-import { useEffect, useState } from "react";
+import { useState, useRef } from "react";
 import CommentsList from "./components/CommentsList/CommentsList";
 import Form from "./components/Form/Form";
 // import {
@@ -24,7 +24,6 @@ function App() {
    const { commentsList } = useAppSelector((state) => state.comments);
    const dispatch = useAppDispatch();
    const [isOpen, setIsOpen] = useState(false);
-
    const [deletedCommentId, setDeletedCommentId] = useState("");
    const [deletedReplyId, setDeletedReplyId] = useState("");
    
@@ -56,10 +55,9 @@ function App() {
          setDeletedReplyId("");
       } else {
          dispatch(deleteComment(deletedCommentId));
-         // setDeletedCommentId("");
       }
    };
-
+  
    return (
       <div className="wrapper">
          <div className="comments">

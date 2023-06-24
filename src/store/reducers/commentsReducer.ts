@@ -121,7 +121,7 @@ const initialState: InitialStateType = {
       },
       {
          id: "5",
-         content: "Impressive! ",
+         content: "Impressive!",
          createdAt: "1 month ago",
          score: 12,
          user: {
@@ -147,23 +147,47 @@ const commentsSlice = createSlice({
          state.commentsList = state.commentsList.filter(item => item.id !== action.payload)
       },
 
-      addReply: (state, action: PayloadAction<{commentId: string, data:CommentType}>) => {
-         console.log(action.payload);
-         
+      addReply: (state, action: PayloadAction<{ commentId: string, data: CommentType }>) => {
          state.commentsList.map(comment => comment.id === action.payload.commentId ? comment.replies.push(action.payload.data) : comment)
       },
       deleteReplyItem: (state, action: PayloadAction<ReplyActionType>) => {
          state.commentsList.map(comment => {
             if (comment.id === action.payload.commentId) {
                comment.replies = comment.replies.filter(reply => action.payload.replyId !== reply.id)
-            } 
+            }
+         })
+      },
+      editComment: (state, action: PayloadAction<{ commentId: string, data: string }>) => {
+         state.commentsList.map(comment => {
+            if (comment.id === action.payload.commentId) {
+               comment.content = action.payload.data
+               return comment
+            } else {
+               return comment
+            }
+         })
+      },
+      editReply: (state, action: PayloadAction<{ commentId: string, replyId: string, data: string }>) => {
+         console.log(action.payload);
+         state.commentsList.map(comment => {
+            if (comment.id === action.payload.commentId) {
+               comment.replies.map(reply => {
+                  if (reply.id === action.payload.replyId) {
+                     reply.content = action.payload.data
+                     return reply
+                  } else {
+                     return reply
+                  }
+               })
+            } else {
+               return comment
+            }
          })
       },
 
-
       counterCommentsLikes: (state, action: PayloadAction<CommentActionType>) => {
          state.commentsList.map(item => {
-            if (action.payload.id === item.id ) {
+            if (action.payload.id === item.id) {
                return { ...item, score: action.payload.mathOperation === 'increment' ? item.score++ : item.score-- }
             } else {
                return item
@@ -188,5 +212,5 @@ const commentsSlice = createSlice({
 })
 
 
-export const { addNewComment, addReply, deleteComment, deleteReplyItem, counterCommentsLikes, counterRepliesLikes } = commentsSlice.actions
+export const { addNewComment, addReply, deleteComment, deleteReplyItem, editComment, editReply, counterCommentsLikes, counterRepliesLikes } = commentsSlice.actions
 export default commentsSlice.reducer

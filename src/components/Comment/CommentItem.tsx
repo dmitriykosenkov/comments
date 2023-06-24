@@ -8,6 +8,7 @@ import {
    CommentType,
    addReply,
    counterCommentsLikes,
+   editComment,
 } from "../../store/reducers/commentsReducer";
 
 interface PropsType {
@@ -27,6 +28,7 @@ const CommentItem: FC<PropsType> = ({
    const [replyMode, setReplyMode] = useState(false);
    const [commentEditMode, setCommentEditMode] = useState(false);
    const [editedCommentID, setEditedCommentID] = useState("");
+   const dispatch = useAppDispatch();
 
    const openReplies = () => {
       setShowReplies((prev) => !prev);
@@ -40,10 +42,8 @@ const CommentItem: FC<PropsType> = ({
       // !======================
       setReplyMode((prev) => !prev);
    };
-
-   const onAddReply = (replyText) => {
+   const onAddReply = (replyText: string) => {
       setDeletedComment(comment.id); // слідкує за коментарем з відкритими реплаями
-
       const replyMessage = {
          id: uuidv4(),
          content: replyText,
@@ -61,18 +61,16 @@ const CommentItem: FC<PropsType> = ({
       const payload = { commentId: comment.id, data: replyMessage };
       dispatch(addReply(payload));
    };
-
-   const commentsCounter = (id, mathOperation) => {
+   const commentsCounter = (id: string, mathOperation: string) => {
       const payload = { mathOperation, id };
       dispatch(counterCommentsLikes(payload));
    };
-
-   const onEditComment = (data) => {
-      console.log(data);
+   const onEditComment = (data: string) => {
+      const payload = {commentId: comment.id, data: data}
+      dispatch(editComment(payload))
       setCommentEditMode(false);
    };
 
-   const dispatch = useAppDispatch();
    return (
       <div className="comments__item comment">
          <ViewComment

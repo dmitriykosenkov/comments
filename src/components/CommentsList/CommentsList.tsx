@@ -1,12 +1,21 @@
+import { FC } from "react";
+import { CommentType } from "../../store/reducers/commentsReducer";
 import CommentItem from "../Comment/CommentItem";
 
-const CommentsList = ({
+interface PropsType {
+   comments: Array<CommentType>
+   setIsOpen: (data: boolean) => void
+   setDeletedComment: (id: string) => void
+   setDeletedReply: (id: string) => void
+}
+
+const CommentsList: FC<PropsType> = ({
    comments = [],
-   addOrDeleteReplyMessage,
    setIsOpen,
    setDeletedComment,
-   setDeletedReply
+   setDeletedReply,
 }) => {
+
    return (
       <div className="comments__items ">
          {comments.map((comment) => (

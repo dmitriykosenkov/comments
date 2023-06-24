@@ -1,5 +1,5 @@
 import ViewComment from "../Comment/ViewComment";
-import { CommentType, counterRepliesLikes } from "../../store/reducers/commentsReducer";
+import { CommentType, counterRepliesLikes, editReply } from "../../store/reducers/commentsReducer";
 import { FC, useState } from "react";
 import { useAppDispatch } from "../../store/hooks";
 
@@ -16,7 +16,6 @@ const RepliesList: FC<PropsType> = ({
    commentId,
    setDeletedReply
 }) => {
-
    const [replyEditMode, setReplyEditMode] = useState(false);
    const [editedReplyID, setEditedReplyID] = useState("");
    const dispatch = useAppDispatch()
@@ -26,8 +25,9 @@ const RepliesList: FC<PropsType> = ({
       dispatch(counterRepliesLikes(payload))
    }
 
-   const onEditReply = (data) => {
-      console.log(data);
+   const onEditReply = (replyId: string, data: string) => {
+      const payload = {commentId, replyId: replyId, data}
+      dispatch(editReply(payload))
       setReplyEditMode(false)
    }
    return (

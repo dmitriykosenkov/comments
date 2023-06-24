@@ -17,7 +17,8 @@ body {
    height: 100%;
    font-family: $baseFont;
    color: hsl(211, 10%, 45%);
-   background-color: hsl(228, 100%, 94%);
+   // background-color: hsl(228, 100%, 94%);
+   background-color: rgb(245, 246, 250);;
 }
 button {
    font-family: $baseFont;
